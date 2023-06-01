@@ -2,9 +2,9 @@ const mysql = require('mysql');
 
 const db = mysql.createConnection({
     host: 'ip_private_sql',
-    user: 'sql_user',
-    password: 'sql_password',
-    database: 'sql_database'
+    user: 'proyek-praktcc',
+    password: 'talitha',
+    database: 'proyek-praktcc'
 });
 
 // Membuat koneksi ke database
