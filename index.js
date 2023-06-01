@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const port = process.env.PORT || 8080; // Port server
+const port = 8080; // Port server
 
 // Mengimpor route untuk masing-masing service
 const userRoute = require('./user/user-service');
