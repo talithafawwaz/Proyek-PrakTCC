@@ -2,6 +2,8 @@ const express = require('express');
 const app = express();
 const port = 8080; // Port server
 
+app.use(express.json());
+
 // Mengimpor route untuk masing-masing service
 const userRoute = require('./user/user-service');
 const barangRoute = require('./barang/barang-service');
