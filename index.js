@@ -5,8 +5,8 @@ const port = 8080; // Port server
 app.use(express.json());
 
 // Mengimpor route untuk masing-masing service
-const userRoute = require('./user/user-service');
-const barangRoute = require('./barang/barang-service');
+const userRoute = require('./service/user-service');
+const barangRoute = require('./service/barang-service');
 
 // Mengatur rute untuk masing-masing service
 app.use('/user', userRoute);
