@@ -1,10 +1,10 @@
 const mysql = require('mysql');
 
 const db = mysql.createConnection({
-    host: '10.72.208.4',
-    user: 'fp-user',
-    password: 'admin12345',
-    database: 'fp-coba'
+    host: 'ip_private_sql',
+    user: 'sql_user',
+    password: 'sql_password',
+    database: 'sql_database'
 });
 
 // Membuat koneksi ke database
