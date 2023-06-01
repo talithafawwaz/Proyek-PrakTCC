@@ -27,9 +27,9 @@ router.post('/', (req, res) => {
     });
 });
 
-router.put('/', (req, res) => {
-    //const id = req.params.id;
-    const { id, username, fullname, password } = req.body;
+router.put('/:id', (req, res) => {
+    const id = req.params.id;
+    const { username, fullname, password } = req.body;
     const sql = 'UPDATE user SET username = ?, fullname = ?, password = ? WHERE id = ?';
     db.query(sql, [username, fullname, password, id], (err, result) => {
       if (err) {
