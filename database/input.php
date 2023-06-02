@@ -1,38 +1,49 @@
 <?php
 session_start();
 if (!isset($_SESSION['username'])) {
-    header("Location: index.php");
+    header("location:index.php");
     exit;
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $id = $_POST["id"];
-    $nama = $_POST["nama"];
-    $jumlah = $_POST["jumlah"];
-    $jenis = $_POST["jenis"];
-    $harga = $_POST["harga"];
+$nama = $_POST["nama"];
+$jumlah = $_POST["jumlah"];
+$jenis = $_POST["jenis"];
+$harga = $_POST["harga"];
 
-    if ($_GET["op"] == "tambah") {
-        $data = array(
-            "id" => $id,
-            "nama" => $nama,
-            "jumlah" => $jumlah,
-            "jenis" => $jenis,
-            "harga" => $harga
-        );
+if ($_GET["op"] == "tambah") {
+    $data = array(
+        "nama" => $nama,
+        "jumlah" => $jumlah,
+        "jenis" => $jenis,
+        "harga" => $harga
+    );
 
-        $url = "https://proyek-praktcc-ugk4rvctua-uc.a.run.app/barang";
-        $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
-        $response = curl_exec($ch);
-        $result = json_decode($response, true);
-        curl_close($ch);
-    } elseif ($_GET["op"] == "edit") {
+    $url = "https://proyek-praktcc-ugk4rvctua-uc.a.run.app/barang";
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+    curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+    $response = curl_exec($ch);
+
+    if ($response === false) {
+        echo "Gagal mengirim permintaan ke API: " . curl_error($ch);
+        exit;
+    }
+
+    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_close($ch);
+
+    if ($httpCode == 200) {
+        header("Location: ../barang.php");
+        exit;
+    } else {
+        echo "Gagal memproses permintaan: " . $httpCode;
+        exit;
+    }
+} elseif ($_GET["op"] == "edit") {
+    if (isset($_GET["id"])) {
         $id = $_GET["id"];
         $data = array(
-            "id" => $id,
             "nama" => $nama,
             "jumlah" => $jumlah,
             "jenis" => $jenis,
@@ -46,18 +57,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
         $response = curl_exec($ch);
-        $result = json_decode($response, true);
-        curl_close($ch);
-    }
 
-    if ($result) {
-        header("Location: ../barang.php");
-        exit;
+        if ($response === false) {
+            echo "Gagal mengirim permintaan ke API: " . curl_error($ch);
+            exit;
+        }
+
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+
+        if ($httpCode == 200) {
+            header("Location: ../barang.php");
+            exit;
+        } else {
+            echo "Gagal memproses permintaan: " . $httpCode;
+            exit;
+        }
     } else {
-        echo "Gagal memproses permintaan.";
+        echo "ID tidak ditemukan dalam parameter URL.";
+        exit;
     }
 } else {
-    echo "Metode request tidak valid.";
+    echo "Operasi tidak valid.";
+    exit;
 }
 ?>
-
