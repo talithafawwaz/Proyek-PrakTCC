@@ -1,0 +1,21 @@
+steps:
+  # Build the container image
+  - name: "gcr.io/cloud-builders/docker"
+    args: ["build", "-t", "gcr.io/praktikum-tcc-133/php-project", "."]
+
+  # Push the container image to Container Registry
+  - name: "gcr.io/cloud-builders/docker"
+    args: ["push", "gcr.io/praktikum-tcc-133/php-project"]
+
+  # Deploy the container image to Cloud Run
+  - name: "gcr.io/cloud-builders/gcloud"
+    args:
+      - "run"
+      - "deploy"
+      - "project-akhir-tcc"
+      - "--image"
+      - "gcr.io/praktikum-tcc-133/php-project"
+      - "--platform"
+      - "managed"
+      - "--region"
+      - "us-central1"
